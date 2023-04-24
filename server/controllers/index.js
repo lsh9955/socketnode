@@ -12,8 +12,9 @@ exports.renderMain = async (req, res, next) => {
   }
 };
 
-exports.renderRoom = (req, res) => {
-  res.render("room", { title: "채팅방 생성" });
+exports.renderRoom = async (req, res) => {
+  const rooms = await Room.find({});
+  res.json({ room: rooms });
 };
 
 exports.createRoom = async (req, res, next) => {
@@ -30,7 +31,7 @@ exports.createRoom = async (req, res, next) => {
       // 비밀번호가 있는 방이면
       res.redirect(`/room/${newRoom._id}?password=${req.body.password}`);
     } else {
-      res.redirect(`/room/${newRoom._id}`);
+      res.redirect(`http://localhost:3000/room/${newRoom._id}`);
     }
   } catch (error) {
     console.error(error);
@@ -49,7 +50,7 @@ exports.enterRoom = async (req, res, next) => {
     }
     const io = req.app.get("io");
     const { rooms } = io.of("/chat").adapter;
-    console.log(rooms, rooms.get(req.params.id), rooms.get(req.params.id));
+
     if (room.max <= rooms.get(req.params.id)?.size) {
       return res.redirect("/?error=허용 인원이 초과하였습니다.");
     }
@@ -90,12 +91,12 @@ exports.sendChat = async (req, res, next) => {
   }
 };
 
-exports.sendGif = async (req, res, next) => {
+exports.sendPic = async (req, res, next) => {
   try {
     const chat = await Chat.create({
       room: req.params.id,
       user: req.session.color,
-      gif: req.file.filename,
+      pic: req.file.filename,
     });
     req.app.get("io").of("/chat").to(req.params.id).emit("chat", chat);
     res.send("ok");

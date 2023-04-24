@@ -10,7 +10,7 @@ const {
   enterRoom,
   removeRoom,
   sendChat,
-  sendGif,
+  sendPic,
 } = require("../controllers");
 
 const router = express.Router();
@@ -48,6 +48,6 @@ const upload = multer({
   }),
   limits: { fileSize: 5 * 1024 * 1024 },
 });
-router.post("/room/:id/gif", upload.single("gif"), sendGif);
+router.post("/room/:id/pic", upload.single("pic"), sendPic);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const express = require("express");
+
 const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -9,12 +10,19 @@ const ColorHash = require("color-hash").default;
 
 dotenv.config();
 const webSocket = require("./socket");
-const indexRouter = require("./routes");
+
 const connect = require("./schemas");
 
 const app = express();
+const http = require("http").Server(app);
+const cors = require("cors");
 app.set("port", process.env.PORT || 5000);
 app.set("view engine", "html");
+const corsOpt = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
+app.use(cors(corsOpt));
 nunjucks.configure("views", {
   express: app,
   watch: true,
@@ -32,7 +40,7 @@ const sessionMiddleware = session({
 });
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/gif", express.static(path.join(__dirname, "uploads")));
+app.use("/pic", express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -46,7 +54,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-
+const indexRouter = require("./routes");
 app.use("/", indexRouter);
 
 app.use((req, res, next) => {

@@ -8,6 +8,7 @@ const connect = () => {
   if (NODE_ENV !== "production") {
     mongoose.set("debug", true);
   }
+  mongoose.set("strictQuery", true);
   mongoose
     .connect(MONGO_URL, {
       dbName: "gameChat",

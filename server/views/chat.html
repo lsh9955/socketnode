@@ -7,8 +7,8 @@
     {% for chat in chats %} {% if chat.user === user %}
     <div class="mine" style="color:{{chat.user}}">
       <div>{{chat.user}}</div>
-      {% if chat.gif %}
-      <img src="/gif/{{chat.gif}}" />
+      {% if chat.pic %}
+      <img src="/pic/{{chat.pic}}" />
       {% else %}
       <div>{{chat.chat}}</div>
       {% endif %}
@@ -20,8 +20,8 @@
     {% else %}
     <div class="other" style="color: {{chat.user}}">
       <div>{{chat.user}}</div>
-      {% if chat.gif %}
-      <img src="/gif/{{chat.gif}}" />
+      {% if chat.pic %}
+      <img src="/pic/{{chat.pic}}" />
       {% else %}
       <div>{{chat.chat}}</div>
       {% endif %}
@@ -30,8 +30,8 @@
   </div>
 </fieldset>
 <form action="/chat" id="chat-form" method="post" enctype="multipart/form-data">
-  <label for="gif">GIF 올리기</label>
-  <input type="file" id="gif" name="gif" accept="image/gif" />
+  <label for="pic">사진 올리기</label>
+  <input type="file" id="pic" name="pic" accept="image/pic" />
   <input type="text" id="chat" name="chat" />
   <button type="submit">전송</button>
 </form>
@@ -73,9 +73,9 @@
       chat.textContent = data.chat;
       div.appendChild(chat);
     } else {
-      const gif = document.createElement("img");
-      gif.src = "/gif/" + data.gif;
-      div.appendChild(gif);
+      const pic = document.createElement("img");
+      pic.src = "/pic/" + data.pic;
+      div.appendChild(pic);
     }
     div.style.color = data.user;
     document.querySelector("#chat-list").appendChild(div);
@@ -95,12 +95,12 @@
         });
     }
   });
-  document.querySelector("#gif").addEventListener("change", function (e) {
+  document.querySelector("#pic").addEventListener("change", function (e) {
     console.log(e.target.files);
     const formData = new FormData();
-    formData.append("gif", e.target.files[0]);
+    formData.append("pic", e.target.files[0]);
     axios
-      .post("/room/{{room._id}}/gif", formData)
+      .post("/room/{{room._id}}/pic", formData)
       .then(() => {
         e.target.file = null;
       })

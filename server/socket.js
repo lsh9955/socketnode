@@ -1,8 +1,14 @@
 const SocketIO = require("socket.io");
 const { removeRoom } = require("./services");
+const cors = require("cors");
 
 module.exports = (server, app, sessionMiddleware) => {
-  const io = SocketIO(server, { path: "/socket.io" });
+  const io = SocketIO(server, {
+    path: "/socket.io",
+    cors: {
+      origin: "http://localhost:3000",
+    },
+  });
   app.set("io", io);
   const room = io.of("/room");
   const chat = io.of("/chat");
@@ -20,8 +26,9 @@ module.exports = (server, app, sessionMiddleware) => {
 
   chat.on("connection", (socket) => {
     console.log("chat 네임스페이스에 접속");
-
+    let roomInfo;
     socket.on("join", (data) => {
+      roomInfo = data;
       socket.join(data);
       socket.to(data).emit("join", {
         user: "system",
@@ -32,10 +39,7 @@ module.exports = (server, app, sessionMiddleware) => {
 
     socket.on("disconnect", async () => {
       console.log("chat 네임스페이스 접속 해제");
-      const { referer } = socket.request.headers; // 브라우저 주소가 들어있음
-      const refArr = new URL(referer).pathname.split("/");
-
-      const roomId = refArr[refArr.length - 1];
+      roomId = roomInfo;
       const currentRoom = chat.adapter.rooms.get(roomId);
       const userCount = currentRoom?.size || 0;
       if (userCount === 0) {

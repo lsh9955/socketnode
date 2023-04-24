@@ -1,14 +1,15 @@
 {
-  "name": "gif-chat",
+  "name": "trpgserver",
   "version": "0.0.1",
-  "description": "GIF 웹 소켓 채팅방",
+  "description": "TRPG",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app"
   },
-  "author": "Zero Cho",
+  "author": "LSH",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "color-hash": "^2.0.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^16.0.1",
