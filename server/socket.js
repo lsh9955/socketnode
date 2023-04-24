@@ -27,13 +27,15 @@ module.exports = (server, app, sessionMiddleware) => {
   chat.on("connection", (socket) => {
     console.log("chat 네임스페이스에 접속");
     let roomInfo;
+    const ranUserNum = Math.random()*100
     socket.on("join", (data) => {
       roomInfo = data;
+      console.log(data)
       socket.join(data);
       socket.to(data).emit("join", {
-        user: "system",
+        user: ranUserNum,
         //현재 임시로 랜덤 컬러로 유저 이름을 지정함. 나중에 실제 유저 API 를 배포하여 연결할 예정
-        chat: `${socket.request.session.color}님이 입장하셨습니다.`,
+        chat: `${ranUserNum}님이 입장하셨습니다.`,
       });
     });
 

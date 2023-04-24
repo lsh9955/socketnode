@@ -30,12 +30,7 @@ router.post("/room/:id/chat", sendChat);
 //이미지 업로드 로직
 //Firebase업로드 로직으로 이식 또는 S3 업로드로 로직 구현
 //추후 이미지 생성 API와 연동 후 삭제할 것
-try {
-  fs.readdirSync("uploads");
-} catch (err) {
-  console.error("uploads 폴더가 없어 uploads 폴더를 생성합니다.");
-  fs.mkdirSync("uploads");
-}
+
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, done) {

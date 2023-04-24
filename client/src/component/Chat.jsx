@@ -1,28 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 
 const Chat = () => {
-  const socket = io.connect("http://localhost:5000/chat", {
-    path: "/socket.io",
-  });
+ 
   useEffect(() => {
+    const socket = io.connect("http://localhost:5000/chat")
     socket.emit("join", new URL(window.location).pathname.split("/").at(-1));
     socket.on("join", function (data) {
-      const div = document.createElement("div");
-      div.classList.add("system");
-      const chat = document.createElement("div");
-      chat.textContent = data.chat;
-      div.appendChild(chat);
-      document.querySelector("#chat-list").appendChild(div);
+      console.log(data)
+  
     });
     socket.on("exit", function (data) {
-      const div = document.createElement("div");
-      div.classList.add("system");
-      const chat = document.createElement("div");
-      chat.textContent = data.chat;
-      div.appendChild(chat);
-      document.querySelector("#chat-list").appendChild(div);
+      console.log(data)
+ 
     });
     socket.on("chat", function (data) {
       const div = document.createElement("div");

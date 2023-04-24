@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 import io from "socket.io-client";
 const Main = () => {
   const [socket, setSocket] = useState(null);
@@ -15,46 +16,32 @@ const Main = () => {
       );
     };
     res();
-    console.log(io.connect("http://localhost:5000/room"));
+
     setSocket(io.connect("http://localhost:5000/room"));
   }, []);
   useEffect(() => {
     socket?.on("newRoom", function (data) {
       // 새 방 이벤트 시 새 방 생성
       console.log("새 방 생성");
-      console.log(rooms, [...rooms, JSON.stringify(data)]);
       setRooms([...rooms, JSON.stringify(data)]);
     });
 
     socket?.on("removeRoom", function (data) {
       // 방 제거 이벤트 시 id가 일치하는 방 제거
       console.log("방 제거");
-      console.log(rooms.slice().splice(rooms.indexOf(JSON.stringify(data))));
       setRooms(rooms.slice().splice(rooms.indexOf(JSON.stringify(data)), 1));
     });
-  }, [rooms, socket]);
+  }, [socket]);
 
-  function addBtnEvent(e) {
-    // 방 입장 클릭 시
-    if (e.target.dataset.password === "true") {
-      const password = prompt("비밀번호를 입력하세요");
-      window.location.href =
-        "/room/" + e.target.dataset.id + "?password=" + password;
-    } else {
-      window.location.href = "/room/" + e.target.dataset.id;
-    }
-  }
+ //비밀번호가 필요한 경우 추가할 것
 
-  document.querySelectorAll(".join-btn").forEach(function (btn) {
-    btn.addEventListener("click", addBtnEvent);
-  });
 
   return (
     <>
       <h1>채팅방</h1>
       <div>
         {rooms.map((v, i) => {
-          return <div>{v}</div>;
+          return <Link to={`/room/${JSON.parse(v)["_id"]}`} key={i} >{v}</Link>;
         })}
       </div>
       <fieldset>
