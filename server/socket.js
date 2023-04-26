@@ -31,7 +31,7 @@ module.exports = (server, app, sessionMiddleware) => {
         roomsUsers[data.roomId] = {};
       }
       roomsUsers[data.roomId][socket.id] = data.user;
-
+      console.log(data.roomId, roomsUsers);
       socket.join(data.roomId);
       roomInfo = data;
       socket.to(data.roomId).emit("join", {
@@ -49,7 +49,7 @@ module.exports = (server, app, sessionMiddleware) => {
 
     socket.on("disconnect", async () => {
       console.log("chat 네임스페이스 접속 해제");
-
+      console.log(roomsUsers);
       let roomId = null;
 
       for (let k in roomsUsers) {
