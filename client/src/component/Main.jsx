@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import io from "socket.io-client";
 const Main = () => {
   const [socket, setSocket] = useState(null);
@@ -33,15 +33,18 @@ const Main = () => {
     });
   }, [socket]);
 
- //비밀번호가 필요한 경우 추가할 것
-
+  //비밀번호가 필요한 경우 추가할 것
 
   return (
     <>
       <h1>채팅방</h1>
       <div>
         {rooms.map((v, i) => {
-          return <Link to={`/room/${JSON.parse(v)["_id"]}`} key={i} >{v}</Link>;
+          return (
+            <Link to={`/room/${JSON.parse(v)["_id"]}`} key={i}>
+              {v}
+            </Link>
+          );
         })}
       </div>
       <fieldset>

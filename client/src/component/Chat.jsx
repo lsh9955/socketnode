@@ -1,41 +1,42 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 
 const Chat = () => {
- 
+  const userN = localStorage.getItem("userInfo");
+  const [userList, setUserList] = useState([userN]);
+  const [chatList, setChatList] = useState([]);
+  const [firCome, setFirCome] = useState(true);
   useEffect(() => {
-    const socket = io.connect("http://localhost:5000/chat")
-    socket.emit("join", new URL(window.location).pathname.split("/").at(-1));
+    const socket = io.connect("http://localhost:5000/chat");
+    //현재는 유저정보를 랜덤으로 하고 있지만, 추후 생성시 json형태로 emit에 넣을것
+    socket.emit("join", {
+      user: userN,
+      roomId: new URL(window.location).pathname.split("/").at(-1),
+    });
     socket.on("join", function (data) {
-      console.log(data)
-  
+      if (!firCome) {
+        setUserList([...userList, data.user]);
+      }
+      socket.emit("userUpdate", {
+        userList: [...userList, data.user],
+        roomId: new URL(window.location).pathname.split("/").at(-1),
+      });
+    });
+    socket.on("userUpdate", function (data) {
+      if (firCome) {
+        console.log("처음 입장");
+        console.log(data.userList);
+
+        setUserList([...data.userList]);
+        setFirCome(false);
+      }
     });
     socket.on("exit", function (data) {
-      console.log(data)
- 
+      setUserList(userList.slice().splice(userList.indexOf(data.user), 1));
     });
     socket.on("chat", function (data) {
-      const div = document.createElement("div");
-      if (data.user === "{{user}}") {
-        div.classList.add("mine");
-      } else {
-        div.classList.add("other");
-      }
-      const name = document.createElement("div");
-      name.textContent = data.user;
-      div.appendChild(name);
-      if (data.chat) {
-        const chat = document.createElement("div");
-        chat.textContent = data.chat;
-        div.appendChild(chat);
-      } else {
-        const pic = document.createElement("img");
-        pic.src = "/pic/" + data.pic;
-        div.appendChild(pic);
-      }
-      div.style.color = data.user;
-      document.querySelector("#chat-list").appendChild(div);
+      setChatList([...chatList, data]);
     });
   }, []);
 
@@ -72,6 +73,19 @@ const Chat = () => {
       <a href="/" id="exit-btn">
         방 나가기
       </a>
+      <div>유저리스트</div>
+      <div>
+        {userList.map((v, i) => {
+          return <div key={i}>{v}</div>;
+        })}
+      </div>
+      <div>채팅리스트</div>
+      <div>
+        {chatList.map((v, i) => {
+          return <div key={i}>{v}</div>;
+        })}
+      </div>
+
       <div>채팅 내용</div>
     </>
   );

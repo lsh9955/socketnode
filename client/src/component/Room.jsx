@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 const Room = () => {
+  const userId = localStorage.getItem("userInfo");
   const submitHandler = (e) => {
     e.preventDefault();
     console.log(e);
@@ -14,13 +15,7 @@ const Room = () => {
           <input type="text" name="title" placeholder="방 제목" />
         </div>
         <div>
-          <input
-            type="number"
-            name="max"
-            placeholder="수용 인원(최소 2명)"
-            min="2"
-            value="10"
-          />
+          <input type="text" name="concept" placeholder="컨셉 설명" />
         </div>
         <div>
           <input
@@ -29,6 +24,7 @@ const Room = () => {
             placeholder="비밀번호(없으면 공개방)"
           />
         </div>
+        <input value={userId} name="userId" />
         <div>
           <input type="submit" onSubmit={submitHandler} />
         </div>

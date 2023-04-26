@@ -22,8 +22,10 @@ exports.createRoom = async (req, res, next) => {
     const newRoom = await Room.create({
       title: req.body.title,
       max: req.body.max,
-      owner: req.session.color,
+      concept: req.body.concept,
+      owner: req.body.userId,
       password: req.body.password,
+      users: req.body.userId,
     });
     const io = req.app.get("io");
     io.of("/room").emit("newRoom", newRoom);
