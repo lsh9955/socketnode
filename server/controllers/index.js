@@ -33,7 +33,9 @@ exports.createRoom = async (req, res, next) => {
       // 비밀번호가 있는 방이면
       res.redirect(`/room/${newRoom._id}?password=${req.body.password}`);
     } else {
-      res.redirect(`http://localhost:3000/room/${newRoom._id}`);
+      res.redirect(
+        `https://strong-duckanoo-21ccd3.netlify.app/room/${newRoom._id}`
+      );
     }
   } catch (error) {
     console.error(error);
