@@ -21,7 +21,10 @@ const Main = () => {
 
     setSocket(
       io.connect(
-        "https://port-0-socketnode-e9btb72mlgxg3m8u.sel4.cloudtype.app/room"
+        "https://port-0-socketnode-e9btb72mlgxg3m8u.sel4.cloudtype.app/room",
+        {
+          transports: ["websocket"],
+        }
       )
     );
   }, []);
