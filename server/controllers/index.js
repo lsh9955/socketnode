@@ -30,7 +30,9 @@ exports.createRoom = async (req, res, next) => {
     io.of("/room").emit("newRoom", newRoom);
     if (req.body.password) {
       // 비밀번호가 있는 방이면
-      res.redirect(`/room/${newRoom._id}?password=${req.body.password}`);
+      res.redirect(
+        `https://strong-duckanoo-21ccd3.netlify.app/room/${newRoom._id}?password=${req.body.password}`
+      );
     } else {
       res.redirect(
         `https://strong-duckanoo-21ccd3.netlify.app/room/${newRoom._id}`
@@ -57,7 +59,6 @@ exports.enterRoom = async (req, res, next) => {
     if (room.max <= rooms.get(req.params.id)?.size) {
       return res.redirect("/?error=허용 인원이 초과하였습니다.");
     }
- 
   } catch (error) {
     console.error(error);
     return next(error);
