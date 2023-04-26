@@ -10,7 +10,10 @@ const Room = () => {
   return (
     <>
       <div>채팅방 생성</div>
-      <form action="http://localhost:5000/room" method="post">
+      <form
+        action="https://port-0-socketnode-e9btb72mlgxg3m8u.sel4.cloudtype.app/room"
+        method="post"
+      >
         <div>
           <input type="text" name="title" placeholder="방 제목" />
         </div>

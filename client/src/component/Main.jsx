@@ -7,7 +7,9 @@ const Main = () => {
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
     const res = async () => {
-      const getRoomInfo = await axios.get("http://localhost:5000/room");
+      const getRoomInfo = await axios.get(
+        "https://port-0-socketnode-e9btb72mlgxg3m8u.sel4.cloudtype.app/room"
+      );
       console.log(getRoomInfo);
       setRooms(
         getRoomInfo.data.room.map((v, i) => {
@@ -17,7 +19,11 @@ const Main = () => {
     };
     res();
 
-    setSocket(io.connect("http://localhost:5000/room"));
+    setSocket(
+      io.connect(
+        "https://port-0-socketnode-e9btb72mlgxg3m8u.sel4.cloudtype.app/room"
+      )
+    );
   }, []);
   useEffect(() => {
     socket?.on("newRoom", function (data) {

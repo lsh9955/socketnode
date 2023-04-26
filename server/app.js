@@ -16,7 +16,7 @@ const http = require("http").Server(app);
 const cors = require("cors");
 app.set("port", process.env.PORT || 5000);
 const corsOpt = {
-  origin: "http://localhost:3000",
+  origin: "https://strong-duckanoo-21ccd3.netlify.app",
   credentials: true,
 };
 app.use(cors(corsOpt));
@@ -51,7 +51,6 @@ app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
   res.status(err.status || 500);
-  res.render("error");
 });
 
 const server = app.listen(app.get("port"), () => {

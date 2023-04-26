@@ -8,7 +8,9 @@ const Chat = () => {
   const [chatList, setChatList] = useState([]);
   const [firCome, setFirCome] = useState(true);
   useEffect(() => {
-    const socket = io.connect("http://localhost:5000/chat");
+    const socket = io.connect(
+      "https://port-0-socketnode-e9btb72mlgxg3m8u.sel4.cloudtype.app/chat"
+    );
     //현재는 유저정보를 랜덤으로 하고 있지만, 추후 생성시 json형태로 emit에 넣을것
     socket.emit("join", {
       user: userN,
