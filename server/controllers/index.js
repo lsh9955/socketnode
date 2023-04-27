@@ -31,12 +31,10 @@ exports.createRoom = async (req, res, next) => {
     if (req.body.password) {
       // 비밀번호가 있는 방이면
       res.redirect(
-        `https://strong-duckanoo-21ccd3.netlify.app/room/${newRoom._id}?password=${req.body.password}`
+        `http://localhost:443/room/${newRoom._id}?password=${req.body.password}`
       );
     } else {
-      res.redirect(
-        `https://strong-duckanoo-21ccd3.netlify.app/room/${newRoom._id}`
-      );
+      res.redirect(`http://localhost:443/room/${newRoom._id}`);
     }
   } catch (error) {
     console.error(error);

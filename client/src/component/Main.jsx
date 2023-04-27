@@ -4,19 +4,14 @@ import { Link } from "react-router-dom";
 import io from "socket.io-client";
 const Main = () => {
   const [socket, setSocket] = useState(
-    io.connect(
-      "https://port-0-socketnode-e9btb72mlgxg3m8u.sel4.cloudtype.app/room",
-      {
-        transports: ["websocket"],
-      }
-    )
+    io.connect("http://localhost:5000/room", {
+      transports: ["websocket"],
+    })
   );
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
     const res = async () => {
-      const getRoomInfo = await axios.get(
-        "https://port-0-socketnode-e9btb72mlgxg3m8u.sel4.cloudtype.app/room"
-      );
+      const getRoomInfo = await axios.get("http://localhost:5000/room");
       console.log(getRoomInfo);
       setRooms(
         getRoomInfo.data.room.map((v, i) => {

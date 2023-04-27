@@ -8,12 +8,9 @@ const Chat = () => {
   const [chatList, setChatList] = useState([]);
   const [firCome, setFirCome] = useState(true);
   const [socket, setSocket] = useState(
-    io.connect(
-      "https://port-0-socketnode-e9btb72mlgxg3m8u.sel4.cloudtype.app/chat",
-      {
-        transports: ["websocket"],
-      }
-    )
+    io.connect("http://localhost:5000/chat", {
+      transports: ["websocket"],
+    })
   );
   useEffect(() => {
     console.log("소켓 변화");
