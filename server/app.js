@@ -26,7 +26,7 @@ const http = require("http").Server(app);
 const cors = require("cors");
 app.set("port", process.env.PORT || 5000);
 const corsOpt = {
-  origin: "https://strong-duckanoo-21ccd3.netlify.app",
+  origin: "http://localhost:3000",
   credentials: true,
 };
 app.use(cors(corsOpt));
