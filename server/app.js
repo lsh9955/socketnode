@@ -5,8 +5,18 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const dotenv = require("dotenv");
+//redis 설정
+
+const redis = require("redis");
+const RedisStore = require("connect-redis")(session);
 
 dotenv.config();
+
+const redisClient = redis.createClient({
+  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  password: process.env.REDIS_PASSWORD,
+});
+
 const webSocket = require("./socket");
 
 const connect = require("./schemas");
@@ -16,7 +26,7 @@ const http = require("http").Server(app);
 const cors = require("cors");
 app.set("port", process.env.PORT || 5000);
 const corsOpt = {
-  origin: "https://strong-duckanoo-21ccd3.netlify.app",
+  origin: "http://localhost:3000",
   credentials: true,
 };
 app.use(cors(corsOpt));
@@ -32,6 +42,18 @@ const sessionMiddleware = session({
     secure: false,
   },
 });
+const sessionOption = {
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.COOKIE_SECRET,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+  },
+  store: new RedisStore({ client: redisClient }),
+};
+sessionOption.proxy = true;
+app.use(session(sessionOption));
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
