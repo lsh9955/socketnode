@@ -11,7 +11,7 @@ import CreateRoomModal from "./component/roomList/CreateRoomModal";
 import io, { Socket } from "socket.io-client";
 import GameRoom from "./component/game/GameRoom";
 import GlobalStyles from './GlobalStyles';
-const chatSocket = io("http://localhost:5000", {
+const chatSocket = io("https://port-0-socketnode-e9btb72mlgxg3m8u.sel4.cloudtype.app", {
   transports: ["websocket"],
 });
 

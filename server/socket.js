@@ -81,7 +81,7 @@ module.exports = (server, app, sessionMiddleware) => {
   const io = SocketIO(server, {
     path: "/socket.io",
     cors: {
-      origin: "http://localhost:3000",
+      origin: "https://strong-duckanoo-21ccd3.netlify.app",
     },
     transports: ["websocket"],
   });

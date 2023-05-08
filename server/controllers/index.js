@@ -48,7 +48,7 @@ exports.createRoom = async (req, res, next) => {
     //const io = req.app.get("io");
     // io.emit("newRoom", newRoom);
 
-    res.redirect(`http://localhost:3000/room/${newRoom._id}`);
+    res.redirect(`https://strong-duckanoo-21ccd3.netlify.app/room/${newRoom._id}`);
   } catch (error) {
     console.error(error);
     next(error);
